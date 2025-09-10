@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <title>Create Debate - Debate Club</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f9f9f9; /* Light background */
+            height: 100vh; /* Full viewport height */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center content vertically */
+            align-items: center; /* Center content horizontally */
+        }
+
+        .create-debate-container {
+            width: 100%;
+            max-width: 600px; /* Max width for the container */
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Center text */
+            margin: 0 auto; /* Center horizontally */
+        }
+
+        .message {
+            margin-top: 20px;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="full-width-border">
+                <div class="title-container">
+                    <img src="/static/images/dicon.jpg" alt="Debate Club Logo" class="logo">
+                    <h1 style="text-transform:uppercase">
+                        <span class="green">DEBATE</span>
+                        <span class="black">CLUB</span>
+                    </h1>
+                </div>
+                <nav class="navbar">
+                    <a href="/dashboard">Debates</a> <!-- Link to Dashboard -->
+                    <a href="/my-debates">My Debates</a> <!-- Link to My Debates Page -->
+                    <a href="/logout" class="btn">Logout</a>
+                </nav>
+            </div>
+        </header>
+        <main>
+            <div class="create-debate-container">
+                <h2>Create a New Debate</h2>
+                <div class="form-section">
+                    <form id="debateForm">
+                        <label for="topic">Debate Topic</label>
+                        <input type="text" id="topic" name="topic" required>
+
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description" rows="5" required></textarea>
+
+                        <label for="date">Debate Date</label>
+                        <input type="date" id="date" name="date" required>
+
+                        <button type="submit">Publish Debate</button>
+                    </form>
+                    <div class="message" id="successMessage" style="display: none;">Debate published!</div>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <p>&copy; 2024 Debate Club. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        const debates = []; // Array to store debates
+
+        document.getElementById('debateForm').onsubmit = function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const topic = document.getElementById('topic').value;
+            const description = document.getElementById('description').value;
+            const date = document.getElementById('date').value;
+
+            // Save the debate
+            const newDebate = { topic, description, date };
+            debates.push(newDebate);
+
+            // Show the success message
+            document.getElementById('successMessage').style.display = 'block';
+            // Reset the form
+            this.reset();
+        };
+    </script>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <title>My Debates - Debate Club</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f9f9f9;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .debate-list-container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .debate-item {
+            margin: 10px 0;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="full-width-border">
+                <div class="title-container">
+                    <img src="/static/images/dicon.jpg" alt="Debate Club Logo" class="logo">
+                    <h1 style="text-transform:uppercase">
+                        <span class="green">DEBATE</span>
+                        <span class="black">CLUB</span>
+                    </h1>
+                </div>
+                <nav class="navbar">
+                    <a href="/create-debate">Create Debate</a>
+                    <a href="/dashboard">Debates</a>
+                    <a href="/logout" class="btn">Logout</a>
+                </nav>
+            </div>
+        </header>
+        <main>
+            <div class="debate-list-container">
+                <h2>My Published Debates</h2>
+                <div id="debateItems">
+                    {% if debates %}
+                        {% for debate in debates %}
+                            <div class="debate-item">
+                                <strong>{{ debate.title }}</strong><br>
+                                <p>{{ debate.description }}</p>
+                                <p><em>Date: {{ debate.date }}</em></p>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No debates published yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </main>
+        <footer>
+            <p>&copy; 2024 Debate Club. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
+
+

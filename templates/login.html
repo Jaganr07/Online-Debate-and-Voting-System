@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Login - Online Debate and Voting System</title>
+</head>
+<body>
+    <div class="login-container">
+        <div class="image-section">
+            <div class="overlay"></div> <!-- Transparent overlay -->
+            <img src="/static/images/peach1.jpg" alt="Debate Image" class="rounded-image">
+        </div>
+        <div class="form-section">
+            <div class="register-link">
+                <a href="#">Not a member? Register now</a>
+            </div>
+            <h2>Hello Again!</h2>
+            <form method="POST">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                
+                <div class="remember-me">
+                    <input type="checkbox" id="remember-me" name="remember-me">
+                    <label for="remember-me">Remember Me</label>
+                </div>
+                
+                <button type="submit">Sign In</button>
+            </form>
+            <p><a href="#">Forgot your password?</a></p>
+            <div class="social-signin">
+                <p>Or sign in with:</p>
+                <a href="#"><img src="/static/images/gicon.png" alt="Google" class="social-icon"></a>
+                <a href="#"><img src="/static/images/ficon.png" alt="Facebook" class="social-icon"></a>
+            </div>
+            <footer>
+                <p>&copy; 2024 Debate System</p>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>

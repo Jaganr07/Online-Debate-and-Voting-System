@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <title>Debate Club</title>
+    <style>
+        .debate-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .debate-box {
+            background-color: #f4f4f4;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .debate-box img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .debate-box h4 {
+            margin: 0;
+            font-size: 1.2em;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="full-width-border">
+                <div class="title-container">
+                    <img src="/static/images/dicon.jpg" alt="Debate Club Logo" class="logo">
+                    <h1 style="text-transform:uppercase">
+                        <span class="green">DEBATE</span>
+                        <span class="black">CLUB</span>
+                    </h1>
+                </div>
+                <nav class="navbar">
+                    <a href="/my-debates">My Debates</a> <!-- Added My Debates link -->
+                    <a href="/create-debate">Create Debate</a>
+                    <a href="/logout" class="btn">Logout</a>
+                </nav>
+            </div>
+        </header>
+        <main>
+            <h2 style="font-size: 3em; color: grey; text-align: center; text-transform: uppercase; margin-top: 40px;">WELCOME TO THE DEBATE CLUB!</h2>
+            <p style="text-align: center;">Engage in thought-provoking debates, discussions, and vote.</p>
+            
+            <h1 class="all-debates">
+                <span class="all">ALL</span> <span class="debates">DEBATES</span>
+            </h1>
+
+            <section class="debate-library">
+                <h3>Debate Library</h3>
+                <div class="debate-grid">
+                    <div class="debate-box">
+                        <a href="debate1.html">
+                            <img src="/static/images/1.jpeg" alt="Topic 1 Image">
+                            <h4>The Role of Education in Social Mobility</h4>
+                        </a>
+                    </div>
+                    <div class="debate-box">
+                        <a href="debate2.html">
+                            <img src="/static/images/2.jpeg" alt="Topic 2 Image">
+                            <h4>Impact of Cinema on Society</h4>
+                        </a>
+                    </div>
+                    <div class="debate-box">
+                        <a href="debate3.html">
+                            <img src="/static/images/3.jpeg" alt="Topic 3 Image">
+                            <h4>Reservation in Education and Employment</h4>
+                        </a>
+                    </div>
+                    <div class="debate-box">
+                        <a href="debate4.html">
+                            <img src="/static/images/4.jpeg" alt="Topic 4 Image">
+                            <h4>Water Scarcity in Tamil Nadu</h4>
+                        </a>
+                    </div>
+                    <div class="debate-box">
+                        <a href="debate5.html">
+                            <img src="/static/images/5.jpeg" alt="Topic 5 Image">
+                            <h4>Political Dynasties in Tamil Nadu</h4>
+                        </a>
+                    </div>
+                    <div class="debate-box">
+                        <a href="debate6.html">
+                            <img src="/static/images/6.jpeg" alt="Topic 6 Image">
+                            <h4>Tourism vs. Environmental Preservation</h4>
+                        </a>
+                    </div>
+                    <div class="debate-box">
+                        <a href="debate7.html">
+                            <img src="/static/images/7.jpeg" alt="Topic 7 Image">
+                            <h4>Traditional Practices in Modern Society</h4>
+                        </a>
+                    </div>
+                    <div class="debate-box">
+                        <a href="debate8.html">
+                            <img src="/static/images/8.jpeg" alt="Topic 8 Image">
+                            <h4>Youth Unemployment in Tamil Nadu</h4>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2024 Debate Club. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
+
