@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Register - Online Debate & Voting System</title>
-  <link rel="stylesheet" href="/docs/css/login.css" />
+  <link rel="stylesheet" href="/docs/static/images/css/login.css" />
 </head>
 <body>
   <div class="form-container">
@@ -24,7 +24,7 @@
     </form>
 
     <div class="login-link">
-      <p>Already have an account? <a href="login.html">Sign In</a></p>
+      <p>Already have an account? <a href="index.html">Sign In</a></p>
     </div>
 
     <footer>
@@ -64,7 +64,7 @@
       try {
         await createUserWithEmailAndPassword(auth, email, password);
         alert("Account created successfully!");
-        window.location.href = "login.html";
+        window.location.href = "index.html";
       } catch (error) {
         alert("Error: " + error.message);
       }
