@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Debates</title>
-  <link rel="stylesheet" href="/docs/static/images/css/home.css">
+  <link rel="stylesheet" href="static/images/css/home.css">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -12,7 +12,7 @@
     <!-- Header -->
     <header class="dashboard-header">
       <div class="title-container">
-        <img src="/docs/static/images/dicon.jpg" alt="Debate Club Logo" class="logo">
+        <img src="static/images/dicon.jpg" alt="Debate Club Logo" class="logo">
         <h1 class="club-title"><span class="green">DEBATE</span> <span class="black">CLUB</span></h1>
       </div>
       <nav class="navbar">
@@ -105,7 +105,7 @@
 
           debateBox.innerHTML = `
             <a href="debate.html?id=${doc.id}">
-              <img src="${debate.imageURL || '/static/images/default.jpg'}" alt="${debate.title}">
+              <img src="${debate.imageURL || 'static/images/default.jpg'}" alt="${debate.title}">
               <h4>${debate.title}</h4>
             </a>
           `;
