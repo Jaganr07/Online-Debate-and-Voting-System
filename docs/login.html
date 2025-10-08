@@ -3,28 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Register - Online Debate & Voting System</title>
-  <link rel="stylesheet" href="/static/css/login.css" />
+  <title>Login - Online Debate & Voting System</title>
+  <link rel="stylesheet" href="/docs/css/login.css" />
 </head>
 <body>
   <div class="form-container">
-    <h2>Create Account</h2>
+    <h2>Welcome Back!</h2>
 
-    <form id="registerForm">
+    <form id="loginForm">
       <label for="username">Email</label>
       <input type="email" id="username" placeholder="Enter your email" required />
 
       <label for="password">Password</label>
       <input type="password" id="password" placeholder="Enter your password" required />
 
-      <label for="confirmPassword">Confirm Password</label>
-      <input type="password" id="confirmPassword" placeholder="Confirm password" required />
-
-      <button type="submit">Sign Up</button>
+      <button type="submit">Sign In</button>
     </form>
 
-    <div class="login-link">
-      <p>Already have an account? <a href="login.html">Sign In</a></p>
+    <div class="register-link">
+      <p>Not a member? <a href="register.html">Register now</a></p>
+    </div>
+
+    <div class="social-signin">
+      <p>Or sign in with</p>
+      <img id="googleLogin" src="/static/images/gicon.png" alt="Google" class="social-icon" />
+      <img src="/static/images/ficon.png" alt="Facebook" class="social-icon" />
     </div>
 
     <footer>
@@ -34,7 +37,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAGm7xBQ3BY-tUa0wKiyx9_xRtU_I-pphg",
@@ -47,24 +50,28 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
 
-    const registerForm = document.getElementById("registerForm");
-    registerForm.addEventListener("submit", async (e) => {
+    const loginForm = document.getElementById("loginForm");
+    loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-
       const email = document.getElementById("username").value;
       const password = document.getElementById("password").value;
-      const confirmPassword = document.getElementById("confirmPassword").value;
-
-      if (password !== confirmPassword) {
-        alert("Passwords do not match!");
-        return;
-      }
 
       try {
-        await createUserWithEmailAndPassword(auth, email, password);
-        alert("Account created successfully!");
-        window.location.href = "login.html";
+        await signInWithEmailAndPassword(auth, email, password);
+        alert("Login successful!");
+        window.location.href = "home.html";
+      } catch (error) {
+        alert("Error: " + error.message);
+      }
+    });
+
+    document.getElementById("googleLogin").addEventListener("click", async () => {
+      try {
+        const result = await signInWithPopup(auth, provider);
+        alert("Signed in as " + result.user.displayName);
+        window.location.href = "home.html";
       } catch (error) {
         alert("Error: " + error.message);
       }
