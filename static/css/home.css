@@ -1,0 +1,162 @@
+/* General Styles */
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
+}
+
+.dashboard-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header */
+.dashboard-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 2px solid #eee;
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 70px;
+  margin-right: 15px;
+  border-radius: 10px;
+}
+
+.club-title {
+  font-size: 2.2em;
+  font-weight: 700;
+}
+
+.club-title .green {
+  color: #4caf50;
+}
+
+.club-title .black {
+  color: #333;
+}
+
+.navbar a {
+  margin-left: 20px;
+  text-decoration: none;
+  font-weight: 600;
+  color: #4caf50;
+  transition: color 0.3s;
+}
+
+.navbar a:hover {
+  color: #2e7d32;
+}
+
+.navbar .btn {
+  padding: 6px 15px;
+  border-radius: 5px;
+  background-color: #4caf50;
+  color: white;
+  transition: background 0.3s;
+}
+
+.navbar .btn:hover {
+  background-color: #388e3c;
+}
+
+/* Hero Section */
+.hero-section {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.welcome-text {
+  font-size: 3em;
+  color: #555;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.welcome-subtext {
+  font-size: 1.2em;
+  color: #777;
+}
+
+/* Debate Section */
+.section-title {
+  text-align: center;
+  font-size: 2em;
+  margin: 50px 0 20px 0;
+}
+
+.section-title .all {
+  color: #4caf50;
+  font-weight: 700;
+}
+
+.section-title .debates {
+  color: #333;
+  font-weight: 700;
+}
+
+/* Debate Grid */
+.debate-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  padding: 0 20px;
+}
+
+.debate-box {
+  background-color: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.debate-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+.debate-box img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.debate-box h4 {
+  padding: 15px;
+  font-size: 1.2em;
+  color: #333;
+  margin: 0;
+  text-align: center;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 30px 0;
+  margin-top: 50px;
+  color: #888;
+  font-size: 14px;
+  border-top: 1px solid #eee;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .navbar {
+    margin-top: 10px;
+  }
+}

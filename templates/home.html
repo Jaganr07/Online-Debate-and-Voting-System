@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debate Club - Home</title>
+  <link rel="stylesheet" href="/static/css/home.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Header -->
+    <header class="dashboard-header">
+      <div class="title-container">
+        <img src="/static/images/dicon.jpg" alt="Debate Club Logo" class="logo">
+        <h1 class="club-title"><span class="green">DEBATE</span> <span class="black">CLUB</span></h1>
+      </div>
+      <nav class="navbar">
+        <a href="my-debates.html">My Debates</a>
+        <a href="create_debate.html">Create Debate</a>
+        <a href="#" id="logoutBtn" class="btn">Logout</a>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <section class="hero-section">
+        <h2 class="welcome-text">Welcome to the Debate Club!</h2>
+        <p class="welcome-subtext">Engage in debates and vote for your favorite arguments.</p>
+      </section>
+
+      <section class="debate-library">
+        <h1 class="section-title"><span class="all">ALL</span> <span class="debates">DEBATES</span></h1>
+        <div id="debateGrid" class="debate-grid">
+          <!-- All user debates will appear here -->
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 Debate Club. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAGm7xBQ3BY-tUa0wKiyx9_xRtU_I-pphg",
+      authDomain: "online-voting-system-7ad10.firebaseapp.com",
+      projectId: "online-voting-system-7ad10",
+      storageBucket: "online-voting-system-7ad10.appspot.com",
+      messagingSenderId: "882341360975",
+      appId: "1:882341360975:web:0a6f2d5313d64fef2d013a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app); // initialize auth
+
+    const debateGrid = document.getElementById("debateGrid");
+
+    // Load all debates
+    async function loadAllDebates() {
+      try {
+        const debatesCol = collection(db, "debates");
+        const q = query(debatesCol, orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+
+        if (snapshot.empty) {
+          debateGrid.innerHTML = "<p style='text-align:center;color:#777;'>No debates found.</p>";
+          return;
+        }
+
+        snapshot.forEach(doc => {
+          const debate = doc.data();
+          const debateBox = document.createElement("div");
+          debateBox.classList.add("debate-box");
+
+          debateBox.innerHTML = `
+            <a href="debate.html?id=${doc.id}">
+              <img src="${debate.imageURL || '/static/images/default.jpg'}" alt="${debate.title}">
+              <h4>${debate.title}</h4>
+            </a>
+          `;
+          debateGrid.appendChild(debateBox);
+        });
+      } catch (error) {
+        console.error("Error loading debates:", error);
+        debateGrid.innerHTML = "<p style='text-align:center;color:red;'>Failed to load debates.</p>";
+      }
+    }
+
+    loadAllDebates();
+
+    // Logout
+    const logoutBtn = document.getElementById("logoutBtn");
+    logoutBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      try {
+        await auth.signOut();
+        console.log("User signed out successfully");
+        window.location.href = "login.html";
+      } catch (error) {
+        console.error("Error signing out:", error);
+        alert("Failed to logout. Check console.");
+      }
+    });
+  </script>
+</body>
+</html>

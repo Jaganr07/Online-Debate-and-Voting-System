@@ -1,80 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
-    <title>My Debates - Debate Club</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: #f9f9f9;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .debate-list-container {
-            width: 100%;
-            max-width: 600px;
-            padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .debate-item {
-            margin: 10px 0;
-            text-align: left;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Debates</title>
+  <link rel="stylesheet" href="/static/css/home.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="dashboard-container">
-        <header class="dashboard-header">
-            <div class="full-width-border">
-                <div class="title-container">
-                    <img src="/static/images/dicon.jpg" alt="Debate Club Logo" class="logo">
-                    <h1 style="text-transform:uppercase">
-                        <span class="green">DEBATE</span>
-                        <span class="black">CLUB</span>
-                    </h1>
-                </div>
-                <nav class="navbar">
-                    <a href="/create-debate">Create Debate</a>
-                    <a href="/dashboard">Debates</a>
-                    <a href="/logout" class="btn">Logout</a>
-                </nav>
-            </div>
-        </header>
-        <main>
-            <div class="debate-list-container">
-                <h2>My Published Debates</h2>
-                <div id="debateItems">
-                    {% if debates %}
-                        {% for debate in debates %}
-                            <div class="debate-item">
-                                <strong>{{ debate.title }}</strong><br>
-                                <p>{{ debate.description }}</p>
-                                <p><em>Date: {{ debate.date }}</em></p>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <p>No debates published yet.</p>
-                    {% endif %}
-                </div>
-            </div>
-        </main>
-        <footer>
-            <p>&copy; 2024 Debate Club. All rights reserved.</p>
-        </footer>
-    </div>
+  <div class="dashboard-container">
+    <!-- Header -->
+    <header class="dashboard-header">
+      <div class="title-container">
+        <img src="/static/images/dicon.jpg" alt="Debate Club Logo" class="logo">
+        <h1 class="club-title"><span class="green">DEBATE</span> <span class="black">CLUB</span></h1>
+      </div>
+      <nav class="navbar">
+        <a href="home.html">Home</a>
+        <a href="create_debate.html">Create Debate</a>
+        <a href="#" id="logoutBtn" class="btn">Logout</a> <!-- Updated -->
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <section class="hero-section">
+        <h2 class="welcome-text">My Debates</h2>
+        <p class="welcome-subtext">Here are the debates you created.</p>
+      </section>
+
+      <section class="debate-library">
+        <div id="myDebateGrid" class="debate-grid">
+          <!-- Dynamic user debates will appear here -->
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 Debate Club. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, where, orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAGm7xBQ3BY-tUa0wKiyx9_xRtU_I-pphg",
+      authDomain: "online-voting-system-7ad10.firebaseapp.com",
+      projectId: "online-voting-system-7ad10",
+      storageBucket: "online-voting-system-7ad10.appspot.com",
+      messagingSenderId: "882341360975",
+      appId: "1:882341360975:web:0a6f2d5313d64fef2d013a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    const myDebateGrid = document.getElementById("myDebateGrid");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    // Logout function
+    logoutBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      try {
+        await auth.signOut();
+        console.log("User signed out successfully");
+        window.location.href = "login.html"; // redirect after logout
+      } catch (error) {
+        console.error("Error signing out:", error);
+        alert("Failed to logout. Check console.");
+      }
+    });
+
+    // Load user debates
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.href = "/login.html";
+        return;
+      }
+
+      try {
+        const debatesCol = collection(db, "debates");
+        const q = query(
+          debatesCol,
+          where("createdBy", "==", user.uid),
+          orderBy("createdAt", "desc")
+        );
+
+        const snapshot = await getDocs(q);
+
+        if (snapshot.empty) {
+          myDebateGrid.innerHTML = "<p style='text-align:center;color:#777;'>You haven't created any debates yet.</p>";
+          return;
+        }
+
+        snapshot.forEach(doc => {
+          const debate = doc.data();
+          const debateBox = document.createElement("div");
+          debateBox.classList.add("debate-box");
+
+          debateBox.innerHTML = `
+            <a href="debate.html?id=${doc.id}">
+              <img src="${debate.imageURL || '/static/images/default.jpg'}" alt="${debate.title}">
+              <h4>${debate.title}</h4>
+            </a>
+          `;
+          myDebateGrid.appendChild(debateBox);
+        });
+      } catch (error) {
+        console.error("Error loading user debates:", error);
+
+        if (error.code === "failed-precondition") {
+          myDebateGrid.innerHTML = `
+            <p style="text-align:center;color:red;">
+              A Firestore index is required to display your debates.<br>
+              <a href="https://console.firebase.google.com/project/online-voting-system-7ad10/firestore/indexes" target="_blank" style="color:blue; text-decoration:underline;">
+                Click here to create the required index
+              </a>
+            </p>
+          `;
+        } else {
+          myDebateGrid.innerHTML = "<p style='text-align:center;color:red;'>Failed to load your debates.</p>";
+        }
+      }
+    });
+  </script>
 </body>
 </html>
-
-

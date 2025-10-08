@@ -1,107 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
-    <title>Create Debate - Debate Club</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: #f9f9f9; /* Light background */
-            height: 100vh; /* Full viewport height */
-            display: flex;
-            flex-direction: column;
-            justify-content: center; /* Center content vertically */
-            align-items: center; /* Center content horizontally */
-        }
-
-        .create-debate-container {
-            width: 100%;
-            max-width: 600px; /* Max width for the container */
-            padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            text-align: center; /* Center text */
-            margin: 0 auto; /* Center horizontally */
-        }
-
-        .message {
-            margin-top: 20px;
-            color: green;
-            font-weight: bold;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Debate</title>
+  <link rel="stylesheet" href="/static/css/create_debate.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="dashboard-container">
-        <header class="dashboard-header">
-            <div class="full-width-border">
-                <div class="title-container">
-                    <img src="/static/images/dicon.jpg" alt="Debate Club Logo" class="logo">
-                    <h1 style="text-transform:uppercase">
-                        <span class="green">DEBATE</span>
-                        <span class="black">CLUB</span>
-                    </h1>
-                </div>
-                <nav class="navbar">
-                    <a href="/dashboard">Debates</a> <!-- Link to Dashboard -->
-                    <a href="/my-debates">My Debates</a> <!-- Link to My Debates Page -->
-                    <a href="/logout" class="btn">Logout</a>
-                </nav>
-            </div>
-        </header>
-        <main>
-            <div class="create-debate-container">
-                <h2>Create a New Debate</h2>
-                <div class="form-section">
-                    <form id="debateForm">
-                        <label for="topic">Debate Topic</label>
-                        <input type="text" id="topic" name="topic" required>
+  <div class="create-container">
+    <h2>Create a New Debate</h2>
+    <form id="debateForm">
+      <label for="title">Debate Title</label>
+      <input type="text" id="title" name="title" placeholder="Enter debate title" required>
 
-                        <label for="description">Description</label>
-                        <textarea id="description" name="description" rows="5" required></textarea>
+      <label for="description">Description</label>
+      <textarea id="description" name="description" rows="4" placeholder="Enter debate description" required></textarea>
 
-                        <label for="date">Debate Date</label>
-                        <input type="date" id="date" name="date" required>
+      <label for="imageURL">Image URL (optional)</label>
+      <input type="text" id="imageURL" name="imageURL" placeholder="Enter image URL">
 
-                        <button type="submit">Publish Debate</button>
-                    </form>
-                    <div class="message" id="successMessage" style="display: none;">Debate published!</div>
-                </div>
-            </div>
-        </main>
-        <footer>
-            <p>&copy; 2024 Debate Club. All rights reserved.</p>
-        </footer>
-    </div>
+      <button type="submit">Create Debate</button>
+    </form>
+    <p id="statusMessage" class="status-message"></p>
+  </div>
 
-    <script>
-        const debates = []; // Array to store debates
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
-        document.getElementById('debateForm').onsubmit = function(event) {
-            event.preventDefault(); // Prevent the default form submission
+    const firebaseConfig = {
+      apiKey: "AIzaSyAGm7xBQ3BY-tUa0wKiyx9_xRtU_I-pphg",
+      authDomain: "online-voting-system-7ad10.firebaseapp.com",
+      projectId: "online-voting-system-7ad10",
+      storageBucket: "online-voting-system-7ad10.firebasestorage.app",
+      messagingSenderId: "882341360975",
+      appId: "1:882341360975:web:0a6f2d5313d64fef2d013a"
+    };
 
-            const topic = document.getElementById('topic').value;
-            const description = document.getElementById('description').value;
-            const date = document.getElementById('date').value;
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
 
-            // Save the debate
-            const newDebate = { topic, description, date };
-            debates.push(newDebate);
+    const form = document.getElementById("debateForm");
+    const statusMessage = document.getElementById("statusMessage");
 
-            // Show the success message
-            document.getElementById('successMessage').style.display = 'block';
-            // Reset the form
-            this.reset();
-        };
-    </script>
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "login.html"; // redirect if not logged in
+      }
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const title = document.getElementById("title").value.trim();
+      const description = document.getElementById("description").value.trim();
+      const imageURL = document.getElementById("imageURL").value.trim();
+
+      try {
+        await addDoc(collection(db, "debates"), {
+          title,
+          description,
+          imageURL,
+          createdBy: user.uid,
+          createdAt: serverTimestamp()
+        });
+
+        statusMessage.textContent = "Debate created successfully! Redirecting...";
+        statusMessage.style.color = "green";
+
+        // Redirect to My Debates after 2 seconds
+        setTimeout(() => {
+          window.location.href = "my-debates.html";
+        }, 2000);
+
+      } catch (error) {
+        console.error("Error creating debate:", error);
+        statusMessage.textContent = "Failed to create debate. Check console.";
+        statusMessage.style.color = "red";
+      }
+    });
+  </script>
 </body>
 </html>
-
-
-
-
